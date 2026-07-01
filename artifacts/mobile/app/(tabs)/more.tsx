@@ -100,10 +100,10 @@ export default function MoreScreen() {
         <Tile icon="people" label="Teachers" value={`${TEACHERS.length}`} color="#0ea5e9" onPress={() => router.push("/teachers")} />
         <Tile icon="person-add" label="Admissions" value={`${ADMISSIONS.length} leads`} color="#8b5cf6" onPress={() => router.push("/admissions")} />
         <Tile icon="document-text" label="Reports" value="Export" color="#10b981" onPress={() => router.push("/reports")} />
-        <Tile icon="calendar" label="Attendance" value="87%" color="#f59e0b" onPress={() => {}} />
-        <Tile icon="chatbubbles" label="Parents" value="Broadcast" color="#ec4899" onPress={() => {}} />
-        <Tile icon="bus" label="Transport" value="12 routes" color="#06b6d4" onPress={() => {}} />
-        <Tile icon="library" label="Inventory" value="Low stock" color="#f43f5e" onPress={() => {}} />
+        <Tile icon="checkbox" label="Attendance" value="Mark now" color="#f59e0b" onPress={() => router.push("/attendance")} />
+        <Tile icon="chatbubbles" label="Parent Comms" value="Threads" color="#ec4899" onPress={() => router.push("/parent-comms")} />
+        <Tile icon="school" label="Exams" value="Results" color="#8b5cf6" onPress={() => router.push("/exams")} />
+        <Tile icon="calendar" label="Calendar" value="Events" color="#06b6d4" onPress={() => router.push("/calendar")} />
         <Tile icon="ribbon" label="Awards" value="Events" color="#f59e0b" onPress={() => {}} />
       </View>
 

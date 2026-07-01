@@ -54,6 +54,22 @@ function RootLayoutNav() {
         name="fee-recovery"
         options={{ headerShown: false, presentation: "card" }}
       />
+      <Stack.Screen
+        name="attendance"
+        options={{ headerShown: false, presentation: "card" }}
+      />
+      <Stack.Screen
+        name="exams"
+        options={{ headerShown: false, presentation: "card" }}
+      />
+      <Stack.Screen
+        name="parent-comms"
+        options={{ headerShown: false, presentation: "card" }}
+      />
+      <Stack.Screen
+        name="calendar"
+        options={{ headerShown: false, presentation: "card" }}
+      />
     </Stack>
   );
 }
