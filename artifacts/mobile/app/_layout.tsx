@@ -46,6 +46,10 @@ function RootLayoutNav() {
         name="reports"
         options={{ headerShown: false, presentation: "card" }}
       />
+      <Stack.Screen
+        name="whatsapp"
+        options={{ headerShown: false, presentation: "card" }}
+      />
     </Stack>
   );
 }

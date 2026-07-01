@@ -7,7 +7,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/useColors";
-import { TEACHERS, ADMISSIONS } from "@/constants/demoData";
+import { TEACHERS, ADMISSIONS, STUDENTS } from "@/constants/demoData";
+
+const OVERDUE_COUNT = STUDENTS.filter((s) => s.feeStatus === "overdue").length;
 
 interface TileProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -108,7 +110,7 @@ export default function MoreScreen() {
       {/* Communication */}
       <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 8 }]}>Communication</Text>
       <View style={[styles.menuGroup, { borderRadius: colors.radius, borderColor: colors.border }]}>
-        <MenuItem icon="logo-whatsapp" label="WhatsApp Broadcast" value="900 parents" color="#25d366" onPress={() => {}} />
+        <MenuItem icon="logo-whatsapp" label="WhatsApp Reminders" value={`${OVERDUE_COUNT} overdue`} color="#25d366" onPress={() => router.push("/whatsapp")} />
         <MenuItem icon="mail" label="Email Announcements" color="#0ea5e9" onPress={() => {}} />
         <MenuItem icon="chatbubble-ellipses" label="SMS Gateway" color="#8b5cf6" onPress={() => {}} />
         <MenuItem icon="megaphone" label="School Announcements" color="#f59e0b" onPress={() => {}} />
