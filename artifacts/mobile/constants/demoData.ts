@@ -362,6 +362,25 @@ export const BIRTHDAYS = [
   { name: "Zainab Malik", class: "Grade 3-C", date: "Tomorrow" },
 ];
 
+export function getRecoveryScore(student: Student): number {
+  const riskFactor = (100 - student.riskScore) * 0.5;
+  const attendanceFactor = (student.attendance / 100) * 35;
+  const statusBonus = student.feeStatus === "partial" ? 12 : 0;
+  return Math.round(Math.min(96, Math.max(12, riskFactor + attendanceFactor + statusBonus)));
+}
+
+export function getRecoveryLabel(score: number): string {
+  if (score >= 70) return "High";
+  if (score >= 40) return "Medium";
+  return "Low";
+}
+
+export function getRecoveryColor(score: number): string {
+  if (score >= 70) return "#10b981";
+  if (score >= 40) return "#f59e0b";
+  return "#f43f5e";
+}
+
 export const formatPKR = (amount: number): string => {
   if (amount >= 1000000) return `PKR ${(amount / 1000000).toFixed(2)}M`;
   if (amount >= 1000) return `PKR ${(amount / 1000).toFixed(0)}K`;

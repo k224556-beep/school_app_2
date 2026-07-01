@@ -50,6 +50,10 @@ function RootLayoutNav() {
         name="whatsapp"
         options={{ headerShown: false, presentation: "card" }}
       />
+      <Stack.Screen
+        name="fee-recovery"
+        options={{ headerShown: false, presentation: "card" }}
+      />
     </Stack>
   );
 }

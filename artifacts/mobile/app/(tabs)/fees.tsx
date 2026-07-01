@@ -6,7 +6,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useColors } from "@/hooks/useColors";
 import { DonutChart, ProgressBar } from "@/components/Charts";
-import { TOP_DEFAULTERS, FEE_RECOVERY, MONTHLY_REVENUE, formatPKR } from "@/constants/demoData";
+import { TOP_DEFAULTERS, FEE_RECOVERY, MONTHLY_REVENUE, STUDENTS, formatPKR, getRecoveryScore } from "@/constants/demoData";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 
 function StatBox({ label, value, color }: { label: string; value: string; color: string }) {
@@ -23,10 +25,15 @@ function StatBox({ label, value, color }: { label: string; value: string; color:
 export default function FeesScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [sending, setSending] = useState<string | null>(null);
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const bottomPad = Platform.OS === "web" ? 34 : 0;
+
+  const nonPaid = STUDENTS.filter((s) => s.feeStatus !== "paid");
+  const avgRecovery = Math.round(nonPaid.reduce((acc, s) => acc + getRecoveryScore(s), 0) / nonPaid.length);
+  const highCount = nonPaid.filter((s) => getRecoveryScore(s) >= 70).length;
 
   const handleReminder = (type: string) => {
     setSending(type);
@@ -53,6 +60,38 @@ export default function FeesScreen() {
           <Text style={[styles.exportText, { color: colors.foreground }]}>Export</Text>
         </Pressable>
       </View>
+
+      {/* AI Recovery Card */}
+      <Pressable
+        onPress={() => router.push("/fee-recovery")}
+        style={[styles.aiCard, { borderRadius: colors.radius }]}
+      >
+        <LinearGradient
+          colors={["#064e3b", "#065f46"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={[styles.aiCardInner, { borderRadius: colors.radius }]}
+        >
+          <View style={styles.aiCardLeft}>
+            <View style={styles.aiTitleRow}>
+              <Ionicons name="sparkles" size={14} color="#10b981" />
+              <Text style={styles.aiCardLabel}>AI-Powered</Text>
+            </View>
+            <Text style={styles.aiCardTitle}>Fee Recovery Score</Text>
+            <Text style={styles.aiCardSub}>
+              {highCount} of {nonPaid.length} unpaid parents likely to pay this week
+            </Text>
+          </View>
+          <View style={styles.aiCardRight}>
+            <Text style={styles.aiScore}>{avgRecovery}%</Text>
+            <Text style={styles.aiScoreLabel}>avg score</Text>
+            <View style={styles.aiViewBtn}>
+              <Text style={styles.aiViewTxt}>View</Text>
+              <Ionicons name="arrow-forward" size={12} color="#10b981" />
+            </View>
+          </View>
+        </LinearGradient>
+      </Pressable>
 
       {/* Donut Summary Card */}
       <View style={[styles.summaryCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
@@ -239,4 +278,16 @@ const styles = StyleSheet.create({
   statDot: { width: 8, height: 8, borderRadius: 4, marginBottom: 6 },
   statValue: { fontSize: 16, fontFamily: "Inter_700Bold" },
   statLabel: { fontSize: 11, fontFamily: "Inter_400Regular", marginTop: 2, textAlign: "center" },
+  aiCard: { marginBottom: 14, overflow: "hidden" },
+  aiCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 12 },
+  aiCardLeft: { flex: 1, gap: 5 },
+  aiTitleRow: { flexDirection: "row", alignItems: "center", gap: 5 },
+  aiCardLabel: { fontSize: 11, fontFamily: "Inter_600SemiBold", color: "#10b981" },
+  aiCardTitle: { fontSize: 17, fontFamily: "Inter_700Bold", color: "#fff" },
+  aiCardSub: { fontSize: 12, fontFamily: "Inter_400Regular", color: "rgba(255,255,255,0.6)", lineHeight: 17 },
+  aiCardRight: { alignItems: "center", gap: 2 },
+  aiScore: { fontSize: 32, fontFamily: "Inter_700Bold", color: "#10b981" },
+  aiScoreLabel: { fontSize: 10, fontFamily: "Inter_400Regular", color: "rgba(255,255,255,0.5)" },
+  aiViewBtn: { flexDirection: "row", alignItems: "center", gap: 3, marginTop: 4, backgroundColor: "rgba(16,185,129,0.15)", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10 },
+  aiViewTxt: { fontSize: 11, fontFamily: "Inter_600SemiBold", color: "#10b981" },
 });
