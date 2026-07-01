@@ -1,0 +1,421 @@
+You are an award-winning Senior Product Designer, UX Researcher, and Full Stack Engineer.
+
+Your task is NOT to build another school management system.
+
+Your task is to design and build a premium prototype of a modern AI-powered School Intelligence Platform that would impress private school owners in Pakistan during a live sales pitch.
+
+The prototype should look like a finished SaaS product comparable to Stripe Dashboard, Linear, Notion, or Apple's design language.
+
+Target audience:
+• School Owners
+• Principals
+• Administrators
+
+Target schools:
+Private schools with 300–3000 students in Pakistan.
+
+The design should immediately communicate:
+
+"We help schools increase fee recovery, save teachers' time, improve student performance, and make better business decisions."
+
+Do NOT make a traditional ERP.
+
+Instead build a premium executive dashboard.
+
+====================================
+DESIGN STYLE
+====================================
+
+Modern SaaS
+
+Minimal
+
+Glassmorphism
+
+Rounded corners
+
+Beautiful gradients
+
+Smooth animations
+
+Professional typography
+
+Large cards
+
+Excellent spacing
+
+Responsive
+
+Dark + Light mode
+
+Feels like a product worth $100/month.
+
+====================================
+HOME DASHBOARD
+====================================
+
+Large greeting
+
+Good Morning,
+Principal Ahmed
+
+School Overview
+
+Cards
+
+Total Students
+
+Attendance Today
+
+Fee Collection This Month
+
+Expected Revenue
+
+Outstanding Fees
+
+Admissions This Month
+
+Teacher Attendance
+
+Parent Satisfaction
+
+Monthly Growth %
+
+====================================
+AI INSIGHTS
+====================================
+
+This should be the hero section.
+
+Examples
+
+⚠ Fee collection is down 8% compared to last month.
+
+AI Suggestion:
+Send reminders to parents of Grade 7.
+
+--------------------------------
+
+Attendance Alert
+
+Grade 8-B has 17 absentees today.
+
+--------------------------------
+
+Risk Students
+
+12 students have low attendance and unpaid fees.
+
+--------------------------------
+
+Revenue Forecast
+
+Expected collection this month:
+PKR 4,250,000
+
+Likely collection:
+PKR 3,910,000
+
+Prediction confidence:
+92%
+
+====================================
+FEE RECOVERY DASHBOARD
+====================================
+
+Beautiful charts
+
+Recovery %
+
+Paid
+
+Partial
+
+Overdue
+
+Expected Revenue
+
+Collected Revenue
+
+Outstanding Balance
+
+Top Defaulters
+
+Upcoming Due Dates
+
+Quick WhatsApp Reminder button
+
+Generate Reminder button
+
+Bulk Reminder button
+
+====================================
+STUDENT PROFILE
+====================================
+
+Student photo
+
+Class
+
+Section
+
+Guardian
+
+Phone
+
+Attendance %
+
+Academic Progress
+
+Behavior Score
+
+Homework Completion
+
+Fee Status
+
+Payment Timeline
+
+Outstanding Balance
+
+Risk Score
+
+AI Recommendation
+
+====================================
+TEACHER ANALYTICS
+====================================
+
+Teacher Attendance
+
+Homework Completion
+
+Class Results
+
+Parent Feedback
+
+Performance Score
+
+AI Suggestions
+
+====================================
+ADMISSIONS CRM
+====================================
+
+Lead Pipeline
+
+New Inquiry
+
+Parent Visit
+
+Follow Up
+
+Admission Confirmed
+
+Conversion %
+
+====================================
+PARENT COMMUNICATION
+====================================
+
+Send WhatsApp
+
+Send SMS
+
+Announcements
+
+Homework
+
+Events
+
+Fee Reminder
+
+One-click broadcast
+
+====================================
+REPORTS
+====================================
+
+Revenue Report
+
+Attendance Report
+
+Fee Collection
+
+Teacher Report
+
+Academic Report
+
+Export PDF
+
+Export Excel
+
+====================================
+AI ASSISTANT
+====================================
+
+Floating AI button.
+
+Example conversation
+
+Principal:
+
+Why has fee collection dropped?
+
+AI:
+
+Most overdue parents belong to Grade 6 and Grade 7.
+Sending reminders can improve recovery by approximately 15%.
+
+--------------------------------
+
+Principal:
+
+Which students are at risk?
+
+AI:
+
+Display list with risk score.
+
+====================================
+ANIMATIONS
+====================================
+
+Everything should animate smoothly.
+
+Cards
+
+Charts
+
+Sidebar
+
+Buttons
+
+Dialogs
+
+Transitions
+
+Hover effects
+
+Loading skeletons
+
+Micro interactions
+
+====================================
+CHARTS
+====================================
+
+Beautiful modern charts
+
+Revenue
+
+Attendance
+
+Admissions
+
+Fee Recovery
+
+Student Performance
+
+====================================
+SIDEBAR
+====================================
+
+Dashboard
+
+Students
+
+Teachers
+
+Attendance
+
+Fees
+
+Admissions
+
+Parents
+
+Reports
+
+AI Insights
+
+Settings
+
+====================================
+DEMO DATA
+====================================
+
+Generate realistic demo data.
+
+Around
+
+900 students
+
+45 teachers
+
+Monthly revenue
+
+PKR 5 Million
+
+Attendance
+
+87%
+
+Fee Recovery
+
+91%
+
+Use realistic Pakistani names.
+
+Classes
+
+Reception
+
+Nursery
+
+KG
+
+Grade 1–10
+
+Generate around 200 fake fee transactions.
+
+Generate realistic parent names.
+
+Generate realistic phone numbers.
+
+====================================
+EXTRA FEATURES
+====================================
+
+Dark mode
+
+Search
+
+Notifications
+
+Calendar
+
+Upcoming Events
+
+Birthday Alerts
+
+Transport Summary
+
+Inventory Summary
+
+School Growth Score
+
+====================================
+GOAL
+====================================
+
+This prototype is NOT meant to be functional.
+
+It is meant to impress investors and school owners during a 5-minute sales presentation.
+
+Everything should feel premium, polished, realistic, and convincing.
+
+The UI quality should be at the level of Stripe, Notion, Linear, Vercel, or Apple.
+
+Use React + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion.
+
+Focus heavily on visual design and user experience rather than backend functionality.
