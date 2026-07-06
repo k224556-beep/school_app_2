@@ -626,3 +626,78 @@ export const formatPKR = (amount: number): string => {
   if (amount >= 1000) return `PKR ${(amount / 1000).toFixed(0)}K`;
   return `PKR ${amount.toLocaleString()}`;
 };
+
+export interface FeeVoucher {
+  challanNo: string;
+  student: Student;
+  month: string;
+  year: number;
+  dueDate: string;
+  issueDate: string;
+  tuitionFee: number;
+  admissionFee: number;
+  examFee: number;
+  transportFee: number;
+  miscFee: number;
+  fine: number;
+  previousBalance: number;
+  totalAmount: number;
+  bankName: string;
+  accountNo: string;
+  status: "unpaid" | "paid" | "overdue";
+}
+
+const CLASS_FEE_STRUCTURE: Record<string, { tuition: number; transport: number }> = {
+  Reception: { tuition: 4500, transport: 1500 },
+  Nursery: { tuition: 4500, transport: 1500 },
+  KG: { tuition: 5000, transport: 1500 },
+  "Grade 1": { tuition: 5500, transport: 1800 },
+  "Grade 2": { tuition: 5500, transport: 1800 },
+  "Grade 3": { tuition: 6000, transport: 1800 },
+  "Grade 4": { tuition: 6000, transport: 1800 },
+  "Grade 5": { tuition: 6500, transport: 2000 },
+  "Grade 6": { tuition: 7000, transport: 2000 },
+  "Grade 7": { tuition: 7000, transport: 2000 },
+  "Grade 8": { tuition: 7500, transport: 2200 },
+  "Grade 9": { tuition: 8500, transport: 2200 },
+  "Grade 10": { tuition: 9000, transport: 2200 },
+};
+
+const BANKS = [
+  { name: "HBL Bank", account: "0011-2233-4455-6" },
+  { name: "Meezan Bank", account: "0099-8877-6655-1" },
+  { name: "UBL Bank", account: "0022-3344-5566-8" },
+];
+
+export function generateVoucher(student: Student, month: string, year: number, seed: number): FeeVoucher {
+  const structure = CLASS_FEE_STRUCTURE[student.class] ?? { tuition: 6000, transport: 1800 };
+  const bank = BANKS[rng(seed * 3, 0, BANKS.length - 1)];
+  const examFee = rng(seed * 5, 0, 3) === 0 ? rng(seed * 7, 1500, 3000) : 0;
+  const miscFee = rng(seed * 11, 200, 800);
+  const fine = student.feeStatus === "overdue" ? rng(seed * 13, 500, 1500) : 0;
+  const previousBalance = student.feeStatus === "overdue" ? student.outstandingBalance : 0;
+  const totalAmount = structure.tuition + structure.transport + examFee + miscFee + fine + previousBalance;
+  return {
+    challanNo: `CH-${year}${String(rng(seed * 17, 1, 12)).padStart(2, "0")}-${student.id.replace("STU", "")}`,
+    student,
+    month,
+    year,
+    dueDate: `${year}-${String(rng(seed * 19, 1, 12)).padStart(2, "0")}-10`,
+    issueDate: `${year}-${String(rng(seed * 23, 1, 12)).padStart(2, "0")}-01`,
+    tuitionFee: structure.tuition,
+    admissionFee: 0,
+    examFee,
+    transportFee: structure.transport,
+    miscFee,
+    fine,
+    previousBalance,
+    totalAmount,
+    bankName: bank.name,
+    accountNo: bank.account,
+    status: student.feeStatus === "paid" ? "paid" : student.feeStatus === "overdue" ? "overdue" : "unpaid",
+  };
+}
+
+export function getClassFee(className: string): { tuition: number; transport: number } {
+  return CLASS_FEE_STRUCTURE[className] ?? { tuition: 6000, transport: 1800 };
+}

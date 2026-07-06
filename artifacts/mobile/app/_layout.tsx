@@ -78,6 +78,10 @@ function RootLayoutNav() {
         name="hr-payroll"
         options={{ headerShown: false, presentation: "card" }}
       />
+      <Stack.Screen
+        name="fee-vouchers"
+        options={{ headerShown: false, presentation: "card" }}
+      />
     </Stack>
   );
 }
