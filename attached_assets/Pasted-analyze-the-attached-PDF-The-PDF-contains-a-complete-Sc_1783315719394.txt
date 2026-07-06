@@ -1,0 +1,534 @@
+analyze the attached PDF.
+
+The PDF contains a complete School ERP feature list.
+
+Your job is NOT to duplicate another application.
+
+Instead, intelligently merge the missing features into MY application while preserving everything that already works.
+
+VERY IMPORTANT
+
+Do NOT remove
+
+existing screens
+existing navigation
+existing UI
+existing theme
+existing animations
+
+Instead,
+
+upgrade every existing module professionally.
+
+Every new feature must naturally integrate with the current project.
+
+UI REQUIREMENTS
+
+Transform the application into something that looks like a premium SaaS product.
+
+Design inspiration:
+
+Linear
+Notion
+Stripe Dashboard
+Google Material 3
+Apple Human Interface
+
+Requirements
+
+smooth animations
+loading skeletons
+empty states
+search everywhere
+filters
+sorting
+pagination
+beautiful charts
+modern cards
+statistics widgets
+responsive layouts
+
+No ugly forms.
+
+No generic Material UI.
+
+Everything should feel polished.
+
+STUDENT MANAGEMENT
+
+Upgrade the student module with
+
+complete profile
+guardian information
+family tree
+emergency contacts
+medical information
+transport details
+documents
+admission history
+promotion history
+attendance summary
+fee summary
+examination summary
+behaviour log
+notes
+custom tags
+ADMISSION CRM
+
+Create a full admission pipeline.
+
+Lead
+
+↓
+
+Enquiry
+
+↓
+
+Follow Up
+
+↓
+
+Interview
+
+↓
+
+Admission
+
+↓
+
+Rejected
+
+↓
+
+Converted
+
+Include
+
+Kanban board
+
+Timeline
+
+Activity history
+
+Lead source
+
+Expected joining date
+
+Reminder system
+
+Automatic follow-ups
+
+ATTENDANCE
+
+Improve attendance module.
+
+Teacher attendance
+
+Student attendance
+
+QR attendance
+
+Manual attendance
+
+Bulk attendance
+
+Attendance analytics
+
+Late arrivals
+
+Leave requests
+
+Monthly reports
+
+Parent notifications
+
+ACADEMICS
+
+Create
+
+Academic Calendar
+
+Curriculum
+
+Subjects
+
+Lesson Planning
+
+Homework
+
+Assignments
+
+Notebook Checking
+
+Syllabus Tracking
+
+Teacher Planner
+
+Auto Timetable Generator
+
+Class Timetable
+
+Teacher Timetable
+
+EXAMINATION
+
+Create
+
+Exam Scheduler
+
+Result Generator
+
+Report Cards
+
+Grading
+
+Performance Analytics
+
+Student Ranking
+
+Result History
+
+Remarks
+
+Progress Charts
+
+Transcript
+
+QUESTION PAPER AI
+
+Create a complete AI module.
+
+Question Bank
+
+MCQs
+
+Short Questions
+
+Long Questions
+
+Scenario Based Questions
+
+Worksheet Generator
+
+Difficulty Levels
+
+Bloom's Taxonomy
+
+Paper Generator
+
+Teacher Review
+
+Export to PDF
+
+FEE MANAGEMENT
+
+Upgrade fee module.
+
+Fee Plans
+
+Fee Categories
+
+Discounts
+
+Scholarships
+
+Transport Fee
+
+Fine Rules
+
+Installments
+
+Online Payments
+
+Fee Challans
+
+Receipt Printing
+
+Fee Defaulters
+
+Monthly Revenue
+
+Collection Analytics
+
+Charts
+
+Ledger
+
+COMMUNICATION
+
+Messenger
+
+Announcements
+
+Push Notifications
+
+Events
+
+Circulars
+
+Notice Board
+
+SMS Integration Ready
+
+WhatsApp Ready
+
+Email Ready
+
+HR
+
+Staff Profiles
+
+Payroll
+
+Attendance
+
+Leaves
+
+Loans
+
+Advances
+
+Performance Reviews
+
+Documents
+
+ID Cards
+
+Departments
+
+Designations
+
+FINANCE
+
+Chart of Accounts
+
+Income
+
+Expenses
+
+Ledger
+
+Petty Cash
+
+Budget
+
+Reports
+
+Profit & Loss
+
+Monthly Analytics
+
+INVENTORY
+
+Inventory
+
+Stock
+
+Assets
+
+Vendors
+
+Purchase Orders
+
+POS
+
+Reports
+
+AI
+
+Create an AI section.
+
+Lesson Planning
+
+Paper Generation
+
+Worksheet Generation
+
+Timetable Generation
+
+Textbook OCR
+
+Chat Assistant
+
+Student Insights
+
+Teacher Assistant
+
+Performance Predictions
+
+PARENT APP
+
+Create Parent Portal
+
+Attendance
+
+Homework
+
+Fee
+
+Results
+
+Notices
+
+Communication
+
+Downloads
+
+TEACHER APP
+
+Dashboard
+
+Attendance
+
+Homework
+
+Marks
+
+Timetable
+
+Lesson Plans
+
+Announcements
+
+Chat
+
+ADMIN DASHBOARD
+
+Create a premium dashboard containing
+
+Revenue
+
+Fee Collection
+
+Admissions
+
+Attendance
+
+Teacher Performance
+
+Student Performance
+
+Charts
+
+Heatmaps
+
+KPIs
+
+Recent Activity
+
+Quick Actions
+
+Upcoming Events
+
+Notifications
+
+ANALYTICS
+
+Every module should have
+
+charts
+
+graphs
+
+filters
+
+date ranges
+
+export
+
+CSV
+
+Excel
+
+PDF
+
+DATA
+
+Do NOT use random fake data.
+
+Create realistic data for
+
+300 students
+
+20 teachers
+
+15 staff
+
+10 classes
+
+6 sections
+
+realistic parents
+
+realistic fees
+
+realistic attendance
+
+realistic exam results
+
+realistic reports
+
+Everything should look like a real school.
+
+PERFORMANCE
+
+Optimize
+
+Provider usage
+
+Widget rebuilds
+
+Lazy loading
+
+Pagination
+
+Caching
+
+Animations
+
+Memory usage
+
+CODE QUALITY
+
+Use
+
+clean architecture
+
+SOLID principles
+
+repository pattern
+
+services
+
+models
+
+extensions
+
+constants
+
+shared widgets
+
+No duplicate code.
+
+Refactor where necessary.
+
+MOST IMPORTANT
+
+Do not stop after generating code.
+
+Continue improving the project until every feature from the attached PDF has either:
+
+been fully implemented,
+integrated into an existing module,
+or intentionally omitted with a documented technical reason.
+
+At the end, generate a detailed report that lists:
+
+Existing features found in my app.
+New features added.
+Files created.
+Files modified.
+Database/model changes.
+Remaining work (if any).
+Suggestions to make the product enterprise-grade for schools in Pakistan.

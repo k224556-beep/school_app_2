@@ -7,7 +7,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/useColors";
-import { STUDENTS, formatPKR } from "@/constants/demoData";
+import {
+  STUDENTS, formatPKR, getFamilyTree, getBehaviorLog, getStudentDocuments,
+  getMedicalInfo, getPromotionHistory, getStudentTags,
+} from "@/constants/demoData";
 import { ProgressBar, DonutChart } from "@/components/Charts";
 
 const AVATAR_COLORS = [
@@ -68,6 +71,21 @@ export default function StudentDetail() {
     { month: "Mar", status: student.feeStatus, amount: 6500 },
   ];
 
+  const familyTree = getFamilyTree(student);
+  const behaviorLog = getBehaviorLog(student);
+  const documents = getStudentDocuments(student);
+  const medical = getMedicalInfo(student);
+  const promotions = getPromotionHistory(student);
+  const tags = getStudentTags(student);
+  const TAG_COLORS: Record<string, string> = {
+    "Top Performer": "#10b981", "At Risk": "#f43f5e", "Model Student": "#8b5cf6",
+    "Low Attendance": "#f59e0b", "Fee Defaulter": "#f43f5e", Regular: "#0ea5e9",
+  };
+  const BEHAVIOR_COLORS = { positive: "#10b981", negative: "#f43f5e", neutral: "#0ea5e9" };
+  const BEHAVIOR_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
+    positive: "thumbs-up", negative: "alert-circle", neutral: "information-circle",
+  };
+
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
@@ -108,6 +126,15 @@ export default function StudentDetail() {
       </LinearGradient>
 
       <View style={{ paddingHorizontal: 16, gap: 14, marginTop: 16 }}>
+        {/* Tags */}
+        <View style={styles.tagsRow}>
+          {tags.map((tag) => (
+            <View key={tag} style={[styles.tagChip, { backgroundColor: (TAG_COLORS[tag] ?? colors.primary) + "18" }]}>
+              <Text style={[styles.tagChipText, { color: TAG_COLORS[tag] ?? colors.primary }]}>{tag}</Text>
+            </View>
+          ))}
+        </View>
+
         {/* Guardian Info */}
         <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
           <Text style={[styles.cardTitle, { color: colors.foreground }]}>Guardian Information</Text>
@@ -204,6 +231,104 @@ export default function StudentDetail() {
           </View>
         </View>
 
+        {/* Family Tree */}
+        <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+          <Text style={[styles.cardTitle, { color: colors.foreground }]}>Family Tree</Text>
+          {familyTree.map((m) => (
+            <View key={m.name} style={styles.familyRow}>
+              <View style={[styles.familyAvatar, { backgroundColor: colors.primary + "20" }]}>
+                <Text style={[styles.familyAvatarText, { color: colors.primary }]}>{m.name.charAt(0)}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.familyName, { color: colors.foreground }]}>{m.name}</Text>
+                <Text style={[styles.familyMeta, { color: colors.mutedForeground }]}>{m.relation} · {m.occupation}</Text>
+              </View>
+              <Text style={[styles.familyPhone, { color: colors.mutedForeground }]}>{m.phone}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Medical Info */}
+        <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+          <Text style={[styles.cardTitle, { color: colors.foreground }]}>Medical Information</Text>
+          <View style={styles.medicalGrid}>
+            <View style={[styles.medicalItem, { backgroundColor: colors.muted, borderRadius: 10 }]}>
+              <Ionicons name="water" size={14} color="#f43f5e" />
+              <Text style={[styles.medicalLabel, { color: colors.mutedForeground }]}>Blood Group</Text>
+              <Text style={[styles.medicalValue, { color: colors.foreground }]}>{medical.bloodGroup}</Text>
+            </View>
+            <View style={[styles.medicalItem, { backgroundColor: colors.muted, borderRadius: 10 }]}>
+              <Ionicons name="alert-circle-outline" size={14} color="#f59e0b" />
+              <Text style={[styles.medicalLabel, { color: colors.mutedForeground }]}>Allergies</Text>
+              <Text style={[styles.medicalValue, { color: colors.foreground }]}>{medical.allergies}</Text>
+            </View>
+          </View>
+          <View style={styles.infoRow}>
+            <Ionicons name="medkit-outline" size={15} color={colors.mutedForeground} />
+            <Text style={[styles.infoLabel, { color: colors.mutedForeground }]}>Conditions</Text>
+            <Text style={[styles.infoValue, { color: colors.foreground }]}>{medical.conditions}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Ionicons name="call-outline" size={15} color={colors.mutedForeground} />
+            <Text style={[styles.infoLabel, { color: colors.mutedForeground }]}>Emergency</Text>
+            <Text style={[styles.infoValue, { color: colors.foreground }]}>{medical.emergencyContact} · {medical.emergencyPhone}</Text>
+          </View>
+        </View>
+
+        {/* Documents */}
+        <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+          <Text style={[styles.cardTitle, { color: colors.foreground }]}>Documents</Text>
+          {documents.map((doc) => (
+            <View key={doc.name} style={styles.docRow}>
+              <Ionicons name={doc.type === "PDF" ? "document-text-outline" : "image-outline"} size={16} color={colors.mutedForeground} />
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.docName, { color: colors.foreground }]}>{doc.name}</Text>
+                <Text style={[styles.docMeta, { color: colors.mutedForeground }]}>Uploaded {doc.uploadedOn}</Text>
+              </View>
+              <View style={[styles.docBadge, { backgroundColor: doc.verified ? "#10b98120" : "#f59e0b20" }]}>
+                <Ionicons name={doc.verified ? "checkmark-circle" : "time-outline"} size={11} color={doc.verified ? "#10b981" : "#f59e0b"} />
+                <Text style={[styles.docBadgeText, { color: doc.verified ? "#10b981" : "#f59e0b" }]}>
+                  {doc.verified ? "Verified" : "Pending"}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        {/* Promotion History */}
+        {promotions.length > 0 && (
+          <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+            <Text style={[styles.cardTitle, { color: colors.foreground }]}>Promotion History</Text>
+            {promotions.map((p, i) => (
+              <View key={i} style={styles.promoRow}>
+                <Text style={[styles.promoYear, { color: colors.mutedForeground }]}>{p.year}</Text>
+                <Text style={[styles.promoClasses, { color: colors.foreground }]}>{p.fromClass} → {p.toClass}</Text>
+                <View style={[styles.promoBadge, { backgroundColor: p.result === "Promoted with Merit" ? "#10b98120" : colors.muted }]}>
+                  <Text style={[styles.promoBadgeText, { color: p.result === "Promoted with Merit" ? "#10b981" : colors.mutedForeground }]}>
+                    {p.result}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Behavior Log */}
+        <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+          <Text style={[styles.cardTitle, { color: colors.foreground }]}>Behavior Log</Text>
+          {behaviorLog.map((b, i) => (
+            <View key={i} style={styles.behaviorRow}>
+              <View style={[styles.behaviorIcon, { backgroundColor: BEHAVIOR_COLORS[b.type] + "20" }]}>
+                <Ionicons name={BEHAVIOR_ICONS[b.type]} size={13} color={BEHAVIOR_COLORS[b.type]} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.behaviorNote, { color: colors.foreground }]}>{b.note}</Text>
+                <Text style={[styles.behaviorMeta, { color: colors.mutedForeground }]}>{b.by} · {b.date}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
         {/* AI Recommendation */}
         <View style={[styles.aiCard, { borderRadius: colors.radius }]}>
           <LinearGradient
@@ -289,4 +414,31 @@ const styles = StyleSheet.create({
   riskBarBg: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" },
   riskBarFill: { height: "100%", borderRadius: 3 },
   riskValue: { fontSize: 12, fontFamily: "Inter_700Bold", width: 45, textAlign: "right" },
+  tagsRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
+  tagChip: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20 },
+  tagChipText: { fontSize: 11, fontFamily: "Inter_600SemiBold" },
+  familyRow: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 4 },
+  familyAvatar: { width: 34, height: 34, borderRadius: 10, alignItems: "center", justifyContent: "center" },
+  familyAvatarText: { fontSize: 14, fontFamily: "Inter_700Bold" },
+  familyName: { fontSize: 13, fontFamily: "Inter_600SemiBold" },
+  familyMeta: { fontSize: 11, fontFamily: "Inter_400Regular" },
+  familyPhone: { fontSize: 11, fontFamily: "Inter_500Medium" },
+  medicalGrid: { flexDirection: "row", gap: 10 },
+  medicalItem: { flex: 1, padding: 10, gap: 4 },
+  medicalLabel: { fontSize: 10, fontFamily: "Inter_500Medium" },
+  medicalValue: { fontSize: 13, fontFamily: "Inter_700Bold" },
+  docRow: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 4 },
+  docName: { fontSize: 13, fontFamily: "Inter_600SemiBold" },
+  docMeta: { fontSize: 11, fontFamily: "Inter_400Regular" },
+  docBadge: { flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10 },
+  docBadgeText: { fontSize: 10, fontFamily: "Inter_600SemiBold" },
+  promoRow: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 4 },
+  promoYear: { fontSize: 12, fontFamily: "Inter_600SemiBold", width: 36 },
+  promoClasses: { fontSize: 13, fontFamily: "Inter_500Medium", flex: 1 },
+  promoBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10 },
+  promoBadgeText: { fontSize: 10, fontFamily: "Inter_600SemiBold" },
+  behaviorRow: { flexDirection: "row", alignItems: "flex-start", gap: 10, paddingVertical: 5 },
+  behaviorIcon: { width: 26, height: 26, borderRadius: 8, alignItems: "center", justifyContent: "center" },
+  behaviorNote: { fontSize: 13, fontFamily: "Inter_500Medium" },
+  behaviorMeta: { fontSize: 11, fontFamily: "Inter_400Regular", marginTop: 1 },
 });

@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/useColors";
-import { TEACHERS, ADMISSIONS, STUDENTS } from "@/constants/demoData";
+import { TEACHERS, ADMISSIONS, STUDENTS, STAFF } from "@/constants/demoData";
 
 const OVERDUE_COUNT = STUDENTS.filter((s) => s.feeStatus === "overdue").length;
 
@@ -104,6 +104,8 @@ export default function MoreScreen() {
         <Tile icon="chatbubbles" label="Parent Comms" value="Threads" color="#ec4899" onPress={() => router.push("/parent-comms")} />
         <Tile icon="school" label="Exams" value="Results" color="#8b5cf6" onPress={() => router.push("/exams")} />
         <Tile icon="calendar" label="Calendar" value="Events" color="#06b6d4" onPress={() => router.push("/calendar")} />
+        <Tile icon="sparkles" label="AI Tools" value="Question Papers" color="#a855f7" onPress={() => router.push("/ai-tools")} />
+        <Tile icon="briefcase" label="HR & Payroll" value={`${STAFF.length} staff`} color="#14b8a6" onPress={() => router.push("/hr-payroll")} />
         <Tile icon="ribbon" label="Awards" value="Events" color="#f59e0b" onPress={() => {}} />
       </View>
 

@@ -70,6 +70,14 @@ function RootLayoutNav() {
         name="calendar"
         options={{ headerShown: false, presentation: "card" }}
       />
+      <Stack.Screen
+        name="ai-tools"
+        options={{ headerShown: false, presentation: "card" }}
+      />
+      <Stack.Screen
+        name="hr-payroll"
+        options={{ headerShown: false, presentation: "card" }}
+      />
     </Stack>
   );
 }

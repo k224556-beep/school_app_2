@@ -1,0 +1,1 @@
+- [Expo mobile app conventions](expo-mobile-app-conventions.md) — theme colors, insets pattern, seeded demo data generator conventions for this School Intelligence Platform app.

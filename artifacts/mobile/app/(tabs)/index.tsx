@@ -9,6 +9,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { useColors } from "@/hooks/useColors";
 import { MetricCard } from "@/components/MetricCard";
 import { AIInsightCard } from "@/components/AIInsightCard";
@@ -34,45 +35,71 @@ function SectionHeader({ title, action }: { title: string; action?: string }) {
 
 const METRICS = [
   {
-    title: "Total Students", value: "900",
+    title: "Total Students", value: "900", color: "#6366f1",
     icon: "people" as const, gradientStart: "#6366f1", gradientEnd: "#8b5cf6", trend: 4.2,
   },
   {
-    title: "Attendance Today", value: `${DASHBOARD_METRICS.attendanceToday}%`,
+    title: "Attendance Today", value: `${DASHBOARD_METRICS.attendanceToday}%`, color: "#0ea5e9",
     icon: "calendar" as const, gradientStart: "#0ea5e9", gradientEnd: "#0284c7", trend: 1.5,
   },
   {
-    title: "Fee Collection", value: formatPKR(DASHBOARD_METRICS.feeCollectionMonth),
+    title: "Fee Collection", value: formatPKR(DASHBOARD_METRICS.feeCollectionMonth), color: "#10b981",
     icon: "wallet" as const, gradientStart: "#10b981", gradientEnd: "#059669", trend: -8.0,
   },
   {
-    title: "Expected Revenue", value: formatPKR(DASHBOARD_METRICS.expectedRevenue),
+    title: "Expected Revenue", value: formatPKR(DASHBOARD_METRICS.expectedRevenue), color: "#f59e0b",
     icon: "trending-up" as const, gradientStart: "#f59e0b", gradientEnd: "#d97706", trend: 2.1,
   },
   {
-    title: "Outstanding Fees", value: formatPKR(DASHBOARD_METRICS.outstandingFees),
+    title: "Outstanding Fees", value: formatPKR(DASHBOARD_METRICS.outstandingFees), color: "#f43f5e",
     icon: "alert-circle" as const, gradientStart: "#f43f5e", gradientEnd: "#e11d48",
   },
   {
-    title: "Admissions (Mar)", value: `${DASHBOARD_METRICS.admissionsMonth}`,
+    title: "Admissions (Mar)", value: `${DASHBOARD_METRICS.admissionsMonth}`, color: "#8b5cf6",
     icon: "school" as const, gradientStart: "#8b5cf6", gradientEnd: "#7c3aed", trend: 16.7,
   },
   {
-    title: "Teacher Attendance", value: `${DASHBOARD_METRICS.teacherAttendance}%`,
+    title: "Teacher Attendance", value: `${DASHBOARD_METRICS.teacherAttendance}%`, color: "#06b6d4",
     icon: "person" as const, gradientStart: "#06b6d4", gradientEnd: "#0891b2",
   },
   {
-    title: "Parent Satisfaction", value: `${DASHBOARD_METRICS.parentSatisfaction}%`,
+    title: "Parent Satisfaction", value: `${DASHBOARD_METRICS.parentSatisfaction}%`, color: "#ec4899",
     icon: "heart" as const, gradientStart: "#ec4899", gradientEnd: "#db2777",
   },
   {
-    title: "Monthly Growth", value: `+${DASHBOARD_METRICS.monthlyGrowth}%`,
+    title: "Monthly Growth", value: `+${DASHBOARD_METRICS.monthlyGrowth}%`, color: "#10b981",
     icon: "bar-chart" as const, gradientStart: "#10b981", gradientEnd: "#6366f1",
   },
 ];
 
+const QUICK_ACTIONS: Array<{ label: string; icon: keyof typeof Ionicons.glyphMap; color: string; route: string }> = [
+  { label: "Mark Attendance", icon: "checkbox", color: "#f59e0b", route: "/attendance" },
+  { label: "New Admission", icon: "person-add", color: "#8b5cf6", route: "/admissions" },
+  { label: "Send Reminder", icon: "logo-whatsapp", color: "#25d366", route: "/whatsapp" },
+  { label: "AI Question Paper", icon: "sparkles", color: "#a855f7", route: "/ai-tools" },
+];
+
+const HEATMAP_WEEKS = 12;
+function generateHeatmapData(seed: number) {
+  const days: number[] = [];
+  let s = seed;
+  for (let i = 0; i < HEATMAP_WEEKS * 7; i++) {
+    s = (s * 9301 + 49297) % 233280;
+    days.push(70 + (s / 233280) * 30);
+  }
+  return days;
+}
+const HEATMAP_DATA = generateHeatmapData(42);
+function heatColor(value: number) {
+  if (value >= 95) return "#10b981";
+  if (value >= 88) return "#34d399cc";
+  if (value >= 80) return "#f59e0b99";
+  return "#f43f5e99";
+}
+
 export default function DashboardScreen() {
   const colors = useColors();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const isDark = useColorScheme() === "dark";
   const headerOpacity = useSharedValue(0);
@@ -134,6 +161,25 @@ export default function DashboardScreen() {
         </LinearGradient>
       </Animated.View>
 
+      {/* Quick Actions */}
+      <View style={styles.section}>
+        <SectionHeader title="Quick Actions" />
+        <View style={styles.quickActionsRow}>
+          {QUICK_ACTIONS.map((qa) => (
+            <Pressable
+              key={qa.label}
+              onPress={() => router.push(qa.route as never)}
+              style={[styles.quickAction, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius - 4 }]}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: qa.color + "20" }]}>
+                <Ionicons name={qa.icon} size={18} color={qa.color} />
+              </View>
+              <Text style={[styles.quickActionLabel, { color: colors.foreground }]} numberOfLines={2}>{qa.label}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+
       {/* Overview Metrics */}
       <View style={styles.section}>
         <SectionHeader title="School Overview" action="See All" />
@@ -179,6 +225,32 @@ export default function DashboardScreen() {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <BarChart data={MONTHLY_REVENUE} height={140} activeColor={colors.primary} />
           </ScrollView>
+        </View>
+      </View>
+
+      {/* Attendance Heatmap */}
+      <View style={styles.section}>
+        <SectionHeader title="Attendance Heatmap" action="12 Weeks" />
+        <View style={[styles.heatmapCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.heatmapGrid}>
+              {Array.from({ length: HEATMAP_WEEKS }).map((_, week) => (
+                <View key={week} style={styles.heatmapCol}>
+                  {Array.from({ length: 7 }).map((_, day) => {
+                    const value = HEATMAP_DATA[week * 7 + day];
+                    return <View key={day} style={[styles.heatmapCell, { backgroundColor: heatColor(value) }]} />;
+                  })}
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+          <View style={styles.heatmapLegend}>
+            <Text style={[styles.heatmapLegendText, { color: colors.mutedForeground }]}>Less</Text>
+            {["#f43f5e99", "#f59e0b99", "#34d399cc", "#10b981"].map((c) => (
+              <View key={c} style={[styles.heatmapLegendDot, { backgroundColor: c }]} />
+            ))}
+            <Text style={[styles.heatmapLegendText, { color: colors.mutedForeground }]}>More</Text>
+          </View>
         </View>
       </View>
 
@@ -268,4 +340,15 @@ const styles = StyleSheet.create({
   birthdayClass: { fontSize: 11, fontFamily: "Inter_400Regular" },
   birthdayBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
   birthdayBadgeText: { fontSize: 11, fontFamily: "Inter_600SemiBold", color: "#ec4899" },
+  quickActionsRow: { flexDirection: "row", gap: 8 },
+  quickAction: { flex: 1, padding: 10, borderWidth: 1, alignItems: "center", gap: 6 },
+  quickActionIcon: { width: 34, height: 34, borderRadius: 10, alignItems: "center", justifyContent: "center" },
+  quickActionLabel: { fontSize: 10, fontFamily: "Inter_600SemiBold", textAlign: "center" },
+  heatmapCard: { padding: 16, borderWidth: 1, gap: 12 },
+  heatmapGrid: { flexDirection: "row", gap: 3 },
+  heatmapCol: { gap: 3 },
+  heatmapCell: { width: 12, height: 12, borderRadius: 3 },
+  heatmapLegend: { flexDirection: "row", alignItems: "center", gap: 4, alignSelf: "flex-end" },
+  heatmapLegendDot: { width: 10, height: 10, borderRadius: 3 },
+  heatmapLegendText: { fontSize: 10, fontFamily: "Inter_400Regular" },
 });

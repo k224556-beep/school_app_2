@@ -63,7 +63,7 @@ function ScoreRing({ score, size = 48 }: { score: number; size?: number }) {
 }
 
 function RecoveryCard({ student, rank }: {
-  student: ReturnType<typeof STUDENTS>[number];
+  student: (typeof STUDENTS)[number];
   rank?: number;
 }) {
   const colors = useColors();
