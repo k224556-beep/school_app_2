@@ -93,6 +93,17 @@ export default function FeesScreen() {
         </LinearGradient>
       </Pressable>
 
+      <Pressable
+        onPress={() => router.push("/fee-vouchers")}
+        style={[styles.feeActionCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}
+      >
+        <View style={styles.feeActionLeft}>
+          <Text style={[styles.feeActionTitle, { color: colors.foreground }]}>Fee Vouchers</Text>
+          <Text style={[styles.feeActionSubtitle, { color: colors.mutedForeground }]}>Generate QR-enabled challans and bulk export PDFs.</Text>
+        </View>
+        <Ionicons name="receipt" size={24} color={colors.primary} />
+      </Pressable>
+
       {/* Donut Summary Card */}
       <View style={[styles.summaryCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
         <View style={styles.donutSection}>
@@ -290,4 +301,8 @@ const styles = StyleSheet.create({
   aiScoreLabel: { fontSize: 10, fontFamily: "Inter_400Regular", color: "rgba(255,255,255,0.5)" },
   aiViewBtn: { flexDirection: "row", alignItems: "center", gap: 3, marginTop: 4, backgroundColor: "rgba(16,185,129,0.15)", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10 },
   aiViewTxt: { fontSize: 11, fontFamily: "Inter_600SemiBold", color: "#10b981" },
+  feeActionCard: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 16, borderWidth: 1, marginBottom: 14 },
+  feeActionLeft: { flex: 1, gap: 4 },
+  feeActionTitle: { fontSize: 15, fontFamily: "Inter_700Bold" },
+  feeActionSubtitle: { fontSize: 12, fontFamily: "Inter_400Regular" },
 });

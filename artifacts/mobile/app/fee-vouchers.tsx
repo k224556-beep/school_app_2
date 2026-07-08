@@ -12,6 +12,7 @@ import {
 } from "@/constants/demoData";
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const YEARS = [2024, 2025, 2026];
 const CURRENT_MONTH = "March";
 const CURRENT_YEAR = 2025;
 
@@ -155,14 +156,19 @@ export default function FeeVouchersScreen() {
   const [search, setSearch] = useState("");
   const [classFilter, setClassFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<FeeVoucher["status"] | "All">("All");
+  const [selectedMonth, setSelectedMonth] = useState(CURRENT_MONTH);
+  const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
   const [selected, setSelected] = useState<FeeVoucher | null>(null);
   const [bulkGenerating, setBulkGenerating] = useState(false);
   const [bulkDone, setBulkDone] = useState(false);
+  const [generatorStatus, setGeneratorStatus] = useState<"idle" | "running" | "ready">("ready");
+  const [generatorMessage, setGeneratorMessage] = useState("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [generatorSeed, setGeneratorSeed] = useState(1);
 
   const vouchers = useMemo(
-    () => DISPLAY_STUDENTS.map((s, i) => generateVoucher(s, CURRENT_MONTH, CURRENT_YEAR, i + 1)),
-    []
+    () => DISPLAY_STUDENTS.map((s, i) => generateVoucher(s, selectedMonth, selectedYear, i + 1)),
+    [selectedMonth, selectedYear, generatorSeed]
   );
 
   const classes = useMemo(() => Array.from(new Set(DISPLAY_STUDENTS.map((s) => s.class))), []);
@@ -238,6 +244,81 @@ export default function FeeVouchersScreen() {
             value={search}
             onChangeText={setSearch}
           />
+        </View>
+
+        <View style={[styles.generatorCard, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}> 
+          <View style={styles.generatorMeta}>
+            <Text style={[styles.generatorLabel, { color: colors.foreground }]}>Fee Voucher Generator</Text>
+            <Text style={[styles.generatorHint, { color: colors.mutedForeground }]}>Create QR-enabled challans for the selected month and export them in bulk.</Text>
+          </View>
+          <Pressable
+            onPress={() => {
+              setGeneratorStatus("running");
+              setGeneratorMessage("");
+              const nextSeed = generatorSeed + 1;
+              setTimeout(() => {
+                setGeneratorSeed(nextSeed);
+                setGeneratorStatus("ready");
+                setGeneratorMessage(`Generated ${DISPLAY_STUDENTS.length} vouchers for ${selectedMonth} ${selectedYear}`);
+                setTimeout(() => setGeneratorMessage(""), 2800);
+              }, 1200);
+            }}
+            style={[styles.generateBtn, { backgroundColor: colors.primary }]}
+          >
+            <Ionicons name={generatorStatus === "running" ? "reload" : "cube"} size={16} color="#fff" />
+            <Text style={styles.generateBtnText}>{generatorStatus === "running" ? "Generating..." : "Generate Vouchers"}</Text>
+          </Pressable>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingTop: 10 }}>
+          {MONTHS.map((m) => (
+            <Pressable
+              key={m}
+              onPress={() => setSelectedMonth(m)}
+              style={[styles.pickerChip, { backgroundColor: selectedMonth === m ? colors.primary : colors.card, borderColor: colors.border }]}
+            >
+              <Text style={[styles.pickerChipText, { color: selectedMonth === m ? "#fff" : colors.mutedForeground }]}>{m}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingTop: 10, paddingBottom: 6 }}>
+          {YEARS.map((y) => (
+            <Pressable
+              key={y}
+              onPress={() => setSelectedYear(y)}
+              style={[styles.pickerChip, { backgroundColor: selectedYear === y ? colors.primary : colors.card, borderColor: colors.border }]}
+            >
+              <Text style={[styles.pickerChipText, { color: selectedYear === y ? "#fff" : colors.mutedForeground }]}>{y}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+        {generatorMessage ? (
+          <View style={[styles.generatorMessage, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}> 
+            <Ionicons name="checkmark-circle-outline" size={16} color={colors.primary} />
+            <Text style={[styles.generatorMessageText, { color: colors.foreground }]}>{generatorMessage}</Text>
+          </View>
+        ) : null}
+
+        <View style={styles.selectAllRow}>
+          <Pressable
+            onPress={() => {
+              if (filtered.length === 0) return;
+              if (filtered.every((v) => selectedIds.has(v.challanNo))) setSelectedIds(new Set());
+              else setSelectedIds(new Set(filtered.map((v) => v.challanNo)));
+            }}
+            style={[styles.selectAllBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
+          >
+            <Ionicons
+              name={filtered.length > 0 && filtered.every((v) => selectedIds.has(v.challanNo)) ? "checkmark-circle" : "ellipse-outline"}
+              size={18}
+              color={colors.primary}
+            />
+            <Text style={[styles.selectAllText, { color: colors.foreground }]}>
+              {filtered.length > 0 && filtered.every((v) => selectedIds.has(v.challanNo)) ? "Deselect all" : `Select all ${filtered.length} vouchers`}
+            </Text>
+          </Pressable>
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
@@ -395,4 +476,17 @@ const styles = StyleSheet.create({
   modalActions: { flexDirection: "row", gap: 10, marginTop: 4 },
   actionBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 12, borderRadius: 12 },
   actionBtnText: { fontSize: 13, fontFamily: "Inter_600SemiBold" },
+  generatorCard: { padding: 16, borderWidth: 1, gap: 10 },
+  generatorMeta: { gap: 4 },
+  generatorLabel: { fontSize: 14, fontFamily: "Inter_700Bold" },
+  generatorHint: { fontSize: 12, fontFamily: "Inter_400Regular" },
+  generateBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 12, borderRadius: 14 },
+  generateBtnText: { fontSize: 13, fontFamily: "Inter_700Bold", color: "#fff" },
+  pickerChip: { paddingHorizontal: 12, paddingVertical: 9, borderRadius: 20, borderWidth: 1 },
+  pickerChipText: { fontSize: 12, fontFamily: "Inter_600SemiBold" },
+  generatorMessage: { flexDirection: "row", alignItems: "center", gap: 8, padding: 12, borderWidth: 1 },
+  generatorMessageText: { fontSize: 13, fontFamily: "Inter_500Medium" },
+  selectAllRow: { paddingTop: 10 },
+  selectAllBtn: { flexDirection: "row", alignItems: "center", gap: 10, padding: 12, borderWidth: 1, borderRadius: 14 },
+  selectAllText: { fontSize: 12, fontFamily: "Inter_600SemiBold" },
 });
