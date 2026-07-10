@@ -29,6 +29,7 @@ function RootLayoutNav() {
         contentStyle: { backgroundColor: colors.background },
       }}
     >
+      <Stack.Screen name="auth/auth-loader" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="student/[id]"

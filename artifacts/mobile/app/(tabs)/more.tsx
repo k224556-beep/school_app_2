@@ -5,6 +5,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import SessionService from "../auth/services/SessionService";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/useColors";
 import { TEACHERS, ADMISSIONS, STUDENTS, STAFF } from "@/constants/demoData";
@@ -152,7 +153,10 @@ export default function MoreScreen() {
         <MenuItem icon="shield-checkmark" label="Privacy & Security" color="#10b981" onPress={() => {}} />
         <MenuItem icon="notifications" label="Notification Preferences" color="#f59e0b" onPress={() => {}} />
         <MenuItem icon="help-circle" label="Help & Support" color="#0ea5e9" onPress={() => {}} />
-        <MenuItem icon="log-out" label="Sign Out" color="#f43f5e" onPress={() => {}} />
+        <MenuItem icon="log-out" label="Sign Out" color="#f43f5e" onPress={async () => {
+          await SessionService.clearSession();
+          router.replace("/auth/login");
+        }} />
       </View>
 
       <View style={styles.footer}>
