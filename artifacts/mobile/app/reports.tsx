@@ -5,6 +5,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/useColors";
 import { DASHBOARD_METRICS, MONTHLY_REVENUE, formatPKR } from "@/constants/demoData";
@@ -70,7 +71,10 @@ export default function ReportsScreen() {
             <Text style={styles.headerTitle}>Reports</Text>
             <Text style={styles.headerSub}>Export & analyze school data</Text>
           </View>
-          <Pressable style={[styles.scheduleBtn, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
+          <Pressable
+            style={[styles.scheduleBtn, { backgroundColor: "rgba(255,255,255,0.1)" }]}
+            onPress={() => Alert.alert("Schedule Reports", "Scheduling reports will be available soon.")}
+          > 
             <Ionicons name="time-outline" size={16} color="rgba(255,255,255,0.7)" />
             <Text style={styles.scheduleBtnText}>Schedule</Text>
           </Pressable>

@@ -17,7 +17,7 @@ export class UserRepository {
    */
   static async findByPhone(phone: string): Promise<AppUser | null> {
     const normalized = UserRepository.normalize(phone);
-    const REMOTE_USER_API = ""; // e.g. https://api.example.com — set to enable remote lookup
+    const REMOTE_USER_API: string = ""; // e.g. https://api.example.com — set to enable remote lookup
 
     if (REMOTE_USER_API) {
       try {

@@ -55,7 +55,10 @@ export default function FeesScreen() {
           <Text style={[styles.title, { color: colors.foreground }]}>Fee Recovery</Text>
           <Text style={[styles.subtitle, { color: colors.mutedForeground }]}>March 2025</Text>
         </View>
-        <Pressable style={[styles.exportBtn, { backgroundColor: colors.muted, borderRadius: 10 }]}>
+        <Pressable
+          style={[styles.exportBtn, { backgroundColor: colors.muted, borderRadius: 10 }]}
+          onPress={() => router.push('/fee-vouchers' as never)}
+        > 
           <Ionicons name="download-outline" size={16} color={colors.foreground} />
           <Text style={[styles.exportText, { color: colors.foreground }]}>Export</Text>
         </Pressable>

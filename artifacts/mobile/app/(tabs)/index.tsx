@@ -19,13 +19,14 @@ import {
 } from "@/constants/demoData";
 import { BarChart } from "@/components/Charts";
 
-function SectionHeader({ title, action }: { title: string; action?: string }) {
+function SectionHeader({ title, action, route }: { title: string; action?: string; route?: string }) {
   const colors = useColors();
+  const router = useRouter();
   return (
     <View style={styles.sectionHeader}>
       <Text style={[styles.sectionTitle, { color: colors.foreground }]}>{title}</Text>
       {action && (
-        <Pressable>
+        <Pressable onPress={() => route ? router.push(route as never) : undefined}>
           <Text style={[styles.sectionAction, { color: colors.primary }]}>{action}</Text>
         </Pressable>
       )}
@@ -137,14 +138,14 @@ export default function DashboardScreen() {
               <Text style={styles.headerDate}>Tuesday, March 18 · Spring Term</Text>
             </View>
             <View style={styles.headerActions}>
-              <Pressable style={styles.headerBtn}>
-                <View style={styles.notifDot} />
-                <Ionicons name="notifications-outline" size={22} color="#fff" />
-              </Pressable>
-              <Pressable style={styles.headerBtn}>
-                <Ionicons name="search-outline" size={22} color="#fff" />
-              </Pressable>
-            </View>
+                <Pressable style={styles.headerBtn} onPress={() => router.push('/notifications' as never)}>
+                  <View style={styles.notifDot} />
+                  <Ionicons name="notifications-outline" size={22} color="#fff" />
+                </Pressable>
+                <Pressable style={styles.headerBtn} onPress={() => router.push('/search' as never)}>
+                  <Ionicons name="search-outline" size={22} color="#fff" />
+                </Pressable>
+              </View>
           </View>
           <View style={styles.scoreRow}>
             <View style={[styles.scoreBadge, { backgroundColor: "rgba(16,185,129,0.2)" }]}>
@@ -182,7 +183,7 @@ export default function DashboardScreen() {
 
       {/* Overview Metrics */}
       <View style={styles.section}>
-        <SectionHeader title="School Overview" action="See All" />
+        <SectionHeader title="School Overview" action="See All" route="/students" />
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.metricsScroll}>
           {METRICS.map((m, i) => (
             <MetricCard key={m.title} {...m} index={i} />
@@ -199,7 +200,7 @@ export default function DashboardScreen() {
             </LinearGradient>
             <Text style={[styles.sectionTitle, { color: colors.foreground }]}>AI Insights</Text>
           </View>
-          <Pressable>
+          <Pressable onPress={() => router.push('/ai-tools' as never)}>
             <Text style={[styles.sectionAction, { color: colors.primary }]}>All Insights</Text>
           </Pressable>
         </View>

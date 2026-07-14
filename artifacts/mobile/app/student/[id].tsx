@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  ScrollView, StyleSheet, Text, View, Platform, Pressable,
+  ScrollView, StyleSheet, Text, View, Platform, Pressable, Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -159,11 +159,17 @@ export default function StudentDetail() {
             <Text style={[styles.infoValue, { color: colors.foreground }]}>{student.admissionDate}</Text>
           </View>
           <View style={styles.actionRow}>
-            <Pressable style={[styles.contactBtn, { backgroundColor: "#25d36620", borderRadius: 10 }]}>
+            <Pressable
+              style={[styles.contactBtn, { backgroundColor: "#25d36620", borderRadius: 10 }]}
+              onPress={() => Alert.alert("WhatsApp", `Open WhatsApp to ${student.guardian} (${student.phone})`)}
+            > 
               <Ionicons name="logo-whatsapp" size={16} color="#25d366" />
               <Text style={[styles.contactBtnText, { color: "#25d366" }]}>WhatsApp</Text>
             </Pressable>
-            <Pressable style={[styles.contactBtn, { backgroundColor: colors.primary + "20", borderRadius: 10 }]}>
+            <Pressable
+              style={[styles.contactBtn, { backgroundColor: colors.primary + "20", borderRadius: 10 }]}
+              onPress={() => Alert.alert("Call", `Call ${student.guardian} at ${student.phone}`)}
+            > 
               <Ionicons name="call-outline" size={16} color={colors.primary} />
               <Text style={[styles.contactBtnText, { color: colors.primary }]}>Call</Text>
             </Pressable>

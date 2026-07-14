@@ -89,6 +89,15 @@ export default function MoreScreen() {
           <Text style={styles.profileName}>Principal Ahmed</Text>
           <Text style={styles.profileRole}>School Administrator</Text>
           <Text style={styles.profileSchool}>The Educators School, Lahore</Text>
+          <Pressable
+            onPress={async () => {
+              await SessionService.clearSession();
+              router.replace('/auth/login');
+            }}
+            style={[styles.logoutBtn, { marginTop: 8 }]}
+          >
+            <Text style={{ color: '#fff', fontFamily: 'Inter_600SemiBold' }}>Logout</Text>
+          </Pressable>
         </View>
         <Pressable style={[styles.editBtn, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
           <Ionicons name="settings-outline" size={18} color="rgba(255,255,255,0.8)" />
@@ -176,6 +185,7 @@ const styles = StyleSheet.create({
   profileRole: { fontSize: 13, fontFamily: "Inter_400Regular", color: "rgba(255,255,255,0.6)", marginTop: 2 },
   profileSchool: { fontSize: 11, fontFamily: "Inter_400Regular", color: "rgba(255,255,255,0.4)", marginTop: 1 },
   editBtn: { width: 36, height: 36, borderRadius: 10, alignItems: "center", justifyContent: "center" },
+  logoutBtn: { paddingVertical: 6, paddingHorizontal: 12, backgroundColor: '#f43f5e', borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   sectionTitle: { fontSize: 16, fontFamily: "Inter_700Bold", marginBottom: 12 },
   tilesGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 20 },
   tile: { width: "47%", padding: 14, borderWidth: 1, gap: 8 },

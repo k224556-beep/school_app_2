@@ -14,6 +14,9 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useColors } from "@/hooks/useColors";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { RoleProvider } from "@/app/auth/context/RoleContext";
+import { USE_FIREBASE_AUTH } from "./auth/useFirebaseAuth";
+import { initFirebase } from "./auth/initFirebase";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,6 +34,8 @@ function RootLayoutNav() {
     >
       <Stack.Screen name="auth/auth-loader" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(teacher-tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(parent-tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="student/[id]"
         options={{ headerShown: false, presentation: "card" }}
@@ -83,6 +88,18 @@ function RootLayoutNav() {
         name="fee-vouchers"
         options={{ headerShown: false, presentation: "card" }}
       />
+      <Stack.Screen
+        name="payments"
+        options={{ headerShown: false, presentation: "card" }}
+      />
+      <Stack.Screen
+        name="payment-receipt"
+        options={{ headerShown: false, presentation: "card" }}
+      />
+      <Stack.Screen
+        name="payments-transactions"
+        options={{ headerShown: false, presentation: "card" }}
+      />
     </Stack>
   );
 }
@@ -109,7 +126,23 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <KeyboardProvider>
-              <RootLayoutNav />
+              <RoleProvider>
+                {/* Optionally replace the mock auth service with Firebase-based service.
+                    To enable, set `USE_FIREBASE_AUTH = true` in `app/auth/useFirebaseAuth.ts`
+                    and ensure you've installed and initialized Firebase. */}
+                {USE_FIREBASE_AUTH && (() => {
+                  // Attempt to initialize Firebase and swap auth service.
+                  // initFirebase is safe to call even if firebase isn't installed; it will log and return false.
+                  initFirebase().then((ok) => {
+                    if (!ok) {
+                      // eslint-disable-next-line no-console
+                      console.warn("Firebase init failed or not configured; using MockAuthService.");
+                    }
+                  });
+                  return null;
+                })()}
+                <RootLayoutNav />
+              </RoleProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>
         </QueryClientProvider>

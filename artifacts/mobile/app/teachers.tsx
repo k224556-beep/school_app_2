@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  ScrollView, StyleSheet, Text, View, Platform, Pressable, FlatList,
+  ScrollView, StyleSheet, Text, View, Platform, Pressable, FlatList, Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -33,7 +33,10 @@ export default function TeachersScreen() {
           <Text style={[styles.title, { color: colors.foreground }]}>Teachers</Text>
           <Text style={[styles.subtitle, { color: colors.mutedForeground }]}>{TEACHERS.length} staff members</Text>
         </View>
-        <Pressable style={[styles.iconBtn, { backgroundColor: colors.primary }]}>
+        <Pressable
+          style={[styles.iconBtn, { backgroundColor: colors.primary }]}
+          onPress={() => Alert.alert("Add Teacher", "This feature is coming soon.")}
+        >
           <Ionicons name="person-add-outline" size={18} color="#fff" />
         </Pressable>
       </View>

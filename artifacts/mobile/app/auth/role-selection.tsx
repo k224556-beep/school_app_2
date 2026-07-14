@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useColors } from "@/hooks/useColors";
 import UserRepository from "./services/UserRepository";
 import SessionService from "./services/SessionService";
+import { routeForRole } from "./routeForRole";
 import { Role } from "./models";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -47,9 +48,7 @@ export default function RoleSelection() {
 
   const choose = async (role: Role) => {
     await SessionService.saveSession({ phone, role, loggedInAt: new Date().toISOString() });
-    if (role === "Admin") router.replace("/");
-    else if (role === "Teacher") router.replace("/teacher-dashboard");
-    else router.replace("/parent-dashboard");
+    router.replace(routeForRole(role) as never);
   };
 
   return (
@@ -58,7 +57,7 @@ export default function RoleSelection() {
         <Text style={[styles.title, { color: colors.foreground }]}>Choose your role</Text>
         <Text style={[styles.subtitle, { color: colors.mutedForeground }]}>Select which role you want to operate as for this session.</Text>
 
-        {user.roles.map((r) => (
+        {user.roles.map((r: Role) => (
           <Pressable key={r} style={[styles.roleCard, { borderColor: colors.border }]} onPress={() => choose(r)}>
             <View style={styles.roleLeft}>
               <Ionicons name={r === "Admin" ? "shield" : r === "Teacher" ? "person" : "people"} size={22} color={colors.primary} />

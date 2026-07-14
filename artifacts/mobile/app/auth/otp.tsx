@@ -5,6 +5,7 @@ import { useColors } from "@/hooks/useColors";
 import { authService } from "./services/AuthService";
 import UserRepository from "./services/UserRepository";
 import SessionService from "./services/SessionService";
+import { routeForRole } from "./routeForRole";
 
 export default function OTPScreen() {
   const colors = useColors();
@@ -75,9 +76,7 @@ export default function OTPScreen() {
     if (user.roles.length === 1) {
       // save session and go
       await SessionService.saveSession({ phone, role: user.roles[0], loggedInAt: new Date().toISOString() });
-      if (user.roles[0] === "Admin") router.replace("/");
-      else if (user.roles[0] === "Teacher") router.replace("/teacher-dashboard");
-      else router.replace("/parent-dashboard");
+      router.replace(routeForRole(user.roles[0]) as never);
     } else {
       router.push(`/auth/role-selection?phone=${phone}`);
     }
@@ -98,7 +97,7 @@ export default function OTPScreen() {
           {Array.from({ length: 6 }).map((_, i) => (
             <TextInput
               key={i}
-              ref={(el) => (inputs.current[i] = el)}
+              ref={(el) => { inputs.current[i] = el; }}
               value={digits[i]}
               onChangeText={(v) => onChange(i, v)}
               onKeyPress={({ nativeEvent }) => {

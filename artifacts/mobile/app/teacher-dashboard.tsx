@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Text, Pressable, StyleSheet } from "react-native";
+import { ScrollView, View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useColors } from "@/hooks/useColors";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,7 +24,10 @@ export default function TeacherDashboard() {
       </View>
 
       <View style={{ marginTop: 12 }}>
-        <Pressable style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Pressable
+          style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}
+          onPress={() => Alert.alert("Classes", "Classes view coming soon.")}
+        >
           <Text style={[styles.cardTitle, { color: colors.foreground }]}>Today's Classes</Text>
           <Text style={[styles.cardSub, { color: colors.mutedForeground }]}>3 scheduled</Text>
         </Pressable>
